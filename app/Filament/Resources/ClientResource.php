@@ -49,7 +49,6 @@ class ClientResource extends Resource
                     ->required(),
                 Forms\Components\KeyValue::make('no_of_children')
                     ->default(["Girls" => "", "Boys" => ""])
-                    
                     ->disableAddingRows()
                     ->disableDeletingRows()
                     ->disableEditingKeys()
