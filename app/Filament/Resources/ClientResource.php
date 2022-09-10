@@ -37,7 +37,7 @@ class ClientResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('contact_numbers')
                     ->required(),
-                Forms\Components\TextInput::make('addresses')
+                Forms\Components\Textarea::make('address')
                     ->required(),
                 Forms\Components\DateTimePicker::make('date_of_birth')
                     ->required(),
