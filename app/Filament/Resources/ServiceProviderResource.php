@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\ServiceProviderResource\Pages;
+use App\Filament\Resources\ServiceProviderResource\RelationManagers;
+use App\Models\ServiceProvider;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 
-class UserResource extends Resource
+class ServiceProviderResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = ServiceProvider::class;
+
+    protected static ?string $navigationLabel = 'Service Providers';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-
-    protected static ?string $navigationLabel = 'Family Planing Champion';
 
     public static function form(Form $form): Form
     {
@@ -105,9 +105,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListServiceProviders::route('/'),
+            'create' => Pages\CreateServiceProvider::route('/create'),
+            'edit' => Pages\EditServiceProvider::route('/{record}/edit'),
         ];
     }    
 }
