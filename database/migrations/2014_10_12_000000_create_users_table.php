@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->jsonb('meta')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->integer('type', 100)->index();
+            $table->integer('type')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

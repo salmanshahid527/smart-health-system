@@ -28,9 +28,11 @@ class ClientResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->autofocus()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('unique_id')
                     ->required()
+                    ->unique(Client::class, 'unique_id', fn ($record) => $record)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('spouse_name')
                     ->required()
@@ -44,16 +46,26 @@ class ClientResource extends Resource
                         'Female' => 'Female'
                     ])
                     ->required(),
-                Forms\Components\TextInput::make('contact_numbers')
+                Forms\Components\TextInput::make('contact_number')
+                    ->integer()
                     ->required(),
-                Forms\Components\Textarea::make('address')
+                Forms\Components\Textarea::make('addresses.address')
                     ->required(),
-                Forms\Components\DateTimePicker::make('date_of_birth')
+                Forms\Components\TextInput::make('age_years')
+                    ->integer()
+                    ->mask(fn (Forms\Components\TextInput\Mask $mask) => $mask
+                        ->range()
+                        ->from(1) // Set the lower limit.
+                        ->to(99) // Set the upper limit.
+                        ->maxValue(99), // Pad zeros at the start of smaller numbers.
+                    ),
+                Forms\Components\DatePicker::make('date_of_registration')
                     ->required(),
-                Forms\Components\DateTimePicker::make('date_of_registration')
-                    ->required(),
-                Forms\Components\Toggle::make('consent_of_contact_back')
-                    ->required(),
+                Forms\Components\Toggle::make('pwd')->label('PWD Y/N')->default(true),
+                Forms\Components\Toggle::make('consent_of_contact_back')->default(true),
+                Forms\Components\Toggle::make('referred')
+                    ->label('Client referred?')
+                    ->default(true),
                 Forms\Components\KeyValue::make('no_of_children')
                     ->default(["Girls" => "", "Boys" => ""])
                     ->disableAddingRows()
@@ -64,7 +76,7 @@ class ClientResource extends Resource
             Forms\Components\Section::make('Client Category')
             ->schema([
                     
-                Forms\Components\Select::make('meta.type')
+                Forms\Components\Select::make('type')
                         ->options([
                             'Current User' => 'Current User',
                             'Ever User' => 'Ever User',
@@ -72,7 +84,7 @@ class ClientResource extends Resource
                         ])
                         ->required()
                         ->reactive(),
-                    Forms\Components\Select::make('meta.current_method')
+                    Forms\Components\Select::make('current_method')
                         ->options([
                             'Condom' => 'Condom',
                             'Pills' => 'Pills',
@@ -87,14 +99,20 @@ class ClientResource extends Resource
                             'LAM (locational amenorrhea method)' => 'LAM (locational amenorrhea method)'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('meta.type') !== 'Current User'),
-                    Forms\Components\TextInput::make('meta.period_of_months')
+                        ->hidden(fn (Closure $get) => $get('type') !== 'Current User'),
+                    Forms\Components\TextInput::make('period_months')
                         ->required()
-                        ->numeric()
-                        ->hidden(fn (Closure $get) => $get('meta.type') !== 'Current User'),
+                        ->integer()
+                        ->mask(fn (Forms\Components\TextInput\Mask $mask) => $mask
+                            ->range()
+                            ->from(1) // Set the lower limit.
+                            ->to(99) // Set the upper limit.
+                            ->maxValue(99), // Pad zeros at the start of smaller numbers.
+                        )
+                        ->hidden(fn (Closure $get) => $get('type') !== 'Current User'),
                         
 
-                    Forms\Components\Select::make('meta.current_method')
+                    Forms\Components\Select::make('current_method')
                         ->options([
                             'Condom' => 'Condom',
                             'Pills' => 'Pills',
@@ -109,8 +127,8 @@ class ClientResource extends Resource
                             'LAM (locational amenorrhea method)' => 'LAM (locational amenorrhea method)'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('meta.type') !== 'Ever User'),
-                    Forms\Components\Select::make('meta.reason_for_discontinuation')
+                        ->hidden(fn (Closure $get) => $get('type') !== 'Ever User'),
+                    Forms\Components\Select::make('reason_for_discontinuation')
                     //  17: Reasons for discontinuation: 1=Side effects, 2=Unavailability of products,       3=Affordability, 4=Husband and/or in law’s disagreement, 5=Desire of more children,  6=Other 
                         ->options([
                             'Side effects' => 'Side effects',
@@ -121,9 +139,9 @@ class ClientResource extends Resource
                             'Other'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('meta.type') !== 'Ever User'),
+                        ->hidden(fn (Closure $get) => $get('type') !== 'Ever User'),
                         
-                    Forms\Components\Select::make('meta.reason_for_never_use')
+                    Forms\Components\Select::make('reason_for_never_use')
                     //  18: Reasons for never use: 1=Husband and/or in law’s disagreement, 2=Misconceptions/myths/religion, 3=Don’t have any idea about FP/lack of awareness, 4=Feel shy to discuss with husband, 5=Affordability, 6=Other (specify)___________
                         ->options([
                             'Husband and/or in law’s disagreement' => 'Husband and/or in law’s disagreement',
@@ -134,10 +152,10 @@ class ClientResource extends Resource
                             'Other'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('meta.type') !== 'Never User'),
+                        ->hidden(fn (Closure $get) => $get('type') !== 'Never User'),
                 ])
                 ->columns(2),
-                Forms\Components\Select::make('registered_as')
+                Forms\Components\Select::make('registered_at')
                     ->options([
                         'House hold visit' => 'House hold visit',
                         'Neighborhood meeting' => 'Neighborhood meeting',
@@ -145,7 +163,7 @@ class ClientResource extends Resource
                     ])
                     ->required(),
 
-                Forms\Components\DateTimePicker::make('followup_date')
+                Forms\Components\DatePicker::make('followup_date')
                 ->required(),
             ]);
     }
@@ -158,10 +176,8 @@ class ClientResource extends Resource
                 Tables\Columns\TextColumn::make('unique_id'),
                 Tables\Columns\TextColumn::make('spouse_name'),
                 Tables\Columns\TextColumn::make('mother_name'),
-                Tables\Columns\TextColumn::make('contact_numbers'),
-                Tables\Columns\TextColumn::make('addresses'),
-                Tables\Columns\TextColumn::make('date_of_birth')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('contact_number'),
+                Tables\Columns\TextColumn::make('address'),
                 Tables\Columns\TextColumn::make('date_of_registration')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('followup_date')
@@ -200,5 +216,5 @@ class ClientResource extends Resource
             'create' => Pages\CreateClient::route('/create'),
             'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
-    }    
+    }
 }
