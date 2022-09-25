@@ -67,7 +67,7 @@ class ClientReferralResource extends Resource
                 ->schema([
                     Forms\Components\Select::make('user_id')
                         ->label('Service Provider')
-                        ->relationship('user', 'name')
+                        ->relationship('serviceProvider', 'name')
                         ->searchable()
                         ->required(),
                     Forms\Components\DatePicker::make('visit_date')

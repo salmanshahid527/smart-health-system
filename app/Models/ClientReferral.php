@@ -16,9 +16,9 @@ class ClientReferral extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function user()
+    public function serviceProvider()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(ServiceProvider::class);
     }
 
 }
