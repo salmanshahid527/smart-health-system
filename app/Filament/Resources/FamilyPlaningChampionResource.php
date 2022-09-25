@@ -58,6 +58,7 @@ class FamilyPlaningChampionResource extends Resource
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->required()
+                            ->unique(FamilyPlaningChampion::class, 'email', fn ($record) => $record)
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('password')

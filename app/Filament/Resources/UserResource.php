@@ -24,39 +24,18 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-            Forms\Components\Section::make('Personal Details')
-            ->schema([
+
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('meta.union_council_name')
-                    ->required()
-                    ->maxLength(255),
 
-                Forms\Components\TextInput::make('meta.union_council_code')
-                    ->required()
-                    ->maxLength(255),
 
-                Forms\Components\TextInput::make('meta.contact_number')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('meta.address')
-                    ->required()
-                    ->maxLength(255),
-
-                    Forms\Components\TextInput::make('meta.eduction')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('meta.marital_status')
-                    ->required()
-                    ->maxLength(255),
-            ])->columns(2),
                 Forms\Components\Section::make('Singup Details')
                 ->schema([
                         Forms\Components\TextInput::make('email')
                             ->email()
+                            ->unique(User::class, 'email', fn ($record) => $record)
                             ->required()
                             ->maxLength(255),
 
