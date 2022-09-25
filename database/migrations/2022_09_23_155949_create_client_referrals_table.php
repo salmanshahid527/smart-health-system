@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('referral_date');
             $table->string('current_method', 100);
             $table->string('referrar_method', 100)->nullable();
-            $table->integer('user_id');
+            $table->integer('service_provider_id');
             $table->dateTime('visit_date');
             $table->string('adopted_method', 100)->nullable();
             $table->string('reason')->nullable();
