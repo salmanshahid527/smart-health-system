@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('client_referrals', function (Blueprint $table) {
             $table->id();
+            $table->integer('client_id');
             $table->dateTime('referral_date');
             $table->string('current_method', 100);
-            $table->string('referrar_method', 100);
-            $table->integer('service_provder');
+            $table->string('referrar_method', 100)->nullable();
+            $table->integer('user_id');
             $table->dateTime('visit_date');
-            $table->string('adopted_method', 100);
-            $table->jsonb('meta');
+            $table->string('adopted_method', 100)->nullable();
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class ClientReferral extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

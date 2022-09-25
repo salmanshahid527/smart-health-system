@@ -13,7 +13,5 @@ class Client extends Model
 
     protected $casts = [
         'no_of_children' => 'array',
-        'addresses' => 'array',
-        'contact_numbers' => 'array',
     ];
 }

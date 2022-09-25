@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('spouse_name', 255);
             $table->string('mother_name', 255);
             $table->string('gender', 100);
-            $table->jsonb('contact_number');
-            $table->jsonb('address');
+            $table->string('contact_number');
+            $table->string('address');
             $table->integer('age_years');
             $table->dateTime('date_of_registration');
             $table->dateTime('followup_date');

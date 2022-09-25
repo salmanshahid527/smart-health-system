@@ -49,7 +49,7 @@ class ClientResource extends Resource
                 Forms\Components\TextInput::make('contact_number')
                     ->integer()
                     ->required(),
-                Forms\Components\Textarea::make('addresses.address')
+                Forms\Components\Textarea::make('address')
                     ->required(),
                 Forms\Components\TextInput::make('age_years')
                     ->integer()
@@ -179,17 +179,17 @@ class ClientResource extends Resource
                 Tables\Columns\TextColumn::make('contact_number'),
                 Tables\Columns\TextColumn::make('address'),
                 Tables\Columns\TextColumn::make('date_of_registration')
-                    ->dateTime(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('followup_date')
-                    ->dateTime(),
+                    ->date(),
                 Tables\Columns\BooleanColumn::make('consent_of_contact_back'),
                 Tables\Columns\TextColumn::make('no_of_children'),
                 Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('registered_at'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->date(),
             ])
             ->filters([
                 //

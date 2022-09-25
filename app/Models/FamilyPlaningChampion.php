@@ -9,10 +9,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements FilamentUser
+class FamilyPlaningChampion extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'users';
+   
     protected $guarded = ['id'];
 
     /**
@@ -48,7 +50,7 @@ class User extends Authenticatable implements FilamentUser
     protected static function booted()
     {
         static::addGlobalScope('ancient', function (Builder $builder) {
-            $builder->where('type', null);
+            $builder->where('type', 'fpc');
         });
     }
 }
