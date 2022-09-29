@@ -56,9 +56,7 @@
             "@php artisan view:clear",
             "@php artisan route:clear",
             "@php artisan migrate --force",
-            "@php artisan db:seed --force",
-            "npm install",
-            "npm run production" 
+            "@php artisan db:seed --force"
         ]
     },
     "extra": {
