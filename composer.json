@@ -58,7 +58,7 @@
             "@php artisan migrate --force",
             "@php artisan db:seed --force",
             "npm install",
-            "npm run production"
+            "npm run production" 
         ]
     },
     "extra": {
