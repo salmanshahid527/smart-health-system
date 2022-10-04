@@ -29,9 +29,9 @@ return new class extends Migration
             $table->boolean('consent_for_contact_back')->default(1);
             $table->boolean('pwd')->default(1);
             $table->jsonb('no_of_children'); //{girl: 1, boy: 3}
-            $table->string('type', 100);
-            $table->string('current_method', 100)->nullable();
-            $table->string('period_months', 100)->nullable();
+            $table->integer('type');
+            $table->integer('current_method')->nullable();
+            $table->integer('period_months')->nullable();
             $table->string('reason', 255)->nullable();
             $table->string('registered_at', 100); //Client Registered at (HHV, NHM, OM)
             $table->boolean('referred')->default(0);

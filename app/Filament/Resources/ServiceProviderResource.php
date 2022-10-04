@@ -41,33 +41,27 @@ class ServiceProviderResource extends Resource
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('meta.contact_number')
-                    ->required()
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('meta.address')
-                    ->required()
                     ->maxLength(255),
 
                     Forms\Components\TextInput::make('meta.eduction')
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('meta.marital_status')
-                    ->required()
                     ->maxLength(255),
             ])->columns(2),
                 Forms\Components\Section::make('Singup Details')
                 ->schema([
                         Forms\Components\TextInput::make('email')
                             ->email()
-                            ->required()
                             ->unique(ServiceProvider::class, 'email', fn ($record) => $record)
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('password')
                             ->password()
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                            ->dehydrated(fn ($state) => filled($state))
-                            ->required(fn (string $context): bool => $context === 'create'),
+                            ->dehydrated(fn ($state) => filled($state)),
                 ])->columns(2),
             ]);
     }
