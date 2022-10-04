@@ -20,7 +20,7 @@ const data = {
 };
 
 const config = {
-    type: 'line',
+    type: 'bar',
     data: data,
     options: {}
 };
@@ -79,7 +79,7 @@ const config2 = {
 
 
 const config3 = {
-    type: 'line',
+    type: 'pie',
     data: data3,
     options: {}
 };
