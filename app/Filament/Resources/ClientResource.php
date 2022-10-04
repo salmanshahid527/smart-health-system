@@ -47,8 +47,7 @@ class ClientResource extends Resource
                     ])
                     ->required(),
                 Forms\Components\TextInput::make('contact_number')
-                    ->integer()
-                    ->required(),
+                    ->integer(),
                 Forms\Components\Textarea::make('address')
                     ->required(),
                 Forms\Components\TextInput::make('age_years')

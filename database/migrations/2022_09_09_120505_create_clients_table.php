@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('spouse_name', 255);
             $table->string('mother_name', 255);
             $table->string('gender', 100);
-            $table->string('contact_number');
+            $table->string('contact_number')->nullable();
             $table->string('address');
             $table->integer('age_years');
             $table->dateTime('date_of_registration');
