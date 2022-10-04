@@ -28,7 +28,7 @@ return new class extends Migration
             $table->dateTime('followup_date');
             $table->boolean('consent_for_contact_back')->default(1);
             $table->boolean('pwd')->default(1);
-            $table->jsonb('no_of_children'); //{girl: 1, boy: 3}
+            $table->jsonb('no_of_children')->nullable(); //{girl: 1, boy: 3}
             $table->integer('type');
             $table->integer('current_method')->nullable();
             $table->integer('period_months')->nullable();

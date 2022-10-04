@@ -69,8 +69,7 @@ class ClientResource extends Resource
                     ->default(["Girls" => "", "Boys" => ""])
                     ->disableAddingRows()
                     ->disableDeletingRows()
-                    ->disableEditingKeys()
-                    ->required(),
+                    ->disableEditingKeys(),
             ])->columns(3),
             Forms\Components\Section::make('Client Category')
             ->schema([
