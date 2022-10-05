@@ -66,7 +66,7 @@ class ClientResource extends Resource
                     ->label('Client referred?')
                     ->default(true),
                 Forms\Components\KeyValue::make('no_of_children')
-                    ->default(["Girls" => "", "Boys" => ""])
+                    ->default(["Girls" => "", "Boys" => "", "Total" => ""])
                     ->disableAddingRows()
                     ->disableDeletingRows()
                     ->disableEditingKeys(),
