@@ -31,11 +31,9 @@ class FamilyPlaningChampionResource extends Resource
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('meta.union_council_name')
-                    ->required()
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('meta.union_council_code')
-                    ->required()
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('meta.contact_number')
