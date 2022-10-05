@@ -76,9 +76,9 @@ class ClientResource extends Resource
                     
                 Forms\Components\Select::make('type')
                         ->options([
-                            '1' => 'Current User',
-                            '2' => 'Ever User',
-                            '3' => 'Never User',
+                            1 => 'Current User',
+                            2 => 'Ever User',
+                            3 => 'Never User',
                         ])
                         ->required()
                         ->reactive(),
@@ -86,20 +86,23 @@ class ClientResource extends Resource
                     // 14: Current and 16 Ever Methods: 
                     // 1= condom, 2= pills, 3= injection, 4=IUD, 5=PPIUCD, 6= Implant, 7= male sterilization, 8= female sterilization, 9=withdrawal, 10=rhythm, 11=LAM (locational amenorrhea method)
                         ->options([
-                            '1' => 'Condom',
-                            '2' => 'Pills',
-                            '3' => 'Injection',
-                            '4' => 'IUD',
-                            '5' => 'PPIUCD',
-                            '6' => 'Implant',
-                            '7' => 'Male sterilization',
-                            '8' => 'Female sterilization',
-                            '9' => 'Withdrawal',
-                            '10' => 'Rhythm',
-                            '11' => 'LAM (locational amenorrhea method)'
+                            1 => 'Condom',
+                            2 => 'Pills',
+                            3 => 'Injection',
+                            4 => 'IUD',
+                            5 => 'PPIUCD',
+                            6 => 'Implant',
+                            7 => 'Male sterilization',
+                            8 => 'Female sterilization',
+                            9 => 'Withdrawal',
+                            10 => 'Rhythm',
+                            11 => 'LAM (locational amenorrhea method)'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('type') !== '1'),
+                        // ->reactive()
+                        ->hidden(function (Closure $get) {
+                            return !in_array($get('type'), [1]);
+                        }),
                     Forms\Components\TextInput::make('period_months')
                         ->required()
                         ->integer()
@@ -109,51 +112,61 @@ class ClientResource extends Resource
                             ->to(99) // Set the upper limit.
                             ->maxValue(99), // Pad zeros at the start of smaller numbers.
                         )
-                        ->hidden(fn (Closure $get) => $get('type') !== '1'),
+                        ->hidden(function (Closure $get) {
+                            return !in_array($get('type'), [1]);
+                        }),
                         
 
                     Forms\Components\Select::make('current_method')
+                    ->label('Ever Method')
                         ->options([
-                            '1' => 'Condom',
-                            '2' => 'Pills',
-                            '3' => 'Injection',
-                            '4' => 'IUD',
-                            '5' => 'PPIUCD',
-                            '6' => 'Implant',
-                            '7' => 'Male sterilization',
-                            '8' => 'Female sterilization',
-                            '9' => 'Withdrawal',
-                            '10' => 'Rhythm',
-                            '11' => 'LAM (locational amenorrhea method)'
+                            1 => 'Condom',
+                            2 => 'Pills',
+                            3 => 'Injection',
+                            4 => 'IUD',
+                            5 => 'PPIUCD',
+                            6 => 'Implant',
+                            7 => 'Male sterilization',
+                            8 => 'Female sterilization',
+                            9 => 'Withdrawal',
+                            10 => 'Rhythm',
+                            11 => 'LAM (locational amenorrhea method)'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('type') !== '2'),
-                    Forms\Components\Select::make('reason_for_discontinuation')
+                        ->hidden(function (Closure $get) {
+                            return !in_array($get('type'), [2]);
+                        }),
+                    Forms\Components\Select::make('reason')
+                    ->label('Reason for Discontinuation')
                     //  17: Reasons for discontinuation: 
                     // 1=Side effects, 2=Unavailability of products,       3=Affordability, 4=Husband and/or in law’s disagreement, 5=Desire of more children,  6=Other 
                         ->options([
-                            '1' => 'Side effects',
-                            '2' => 'Unavailability of products',
-                            '3' => 'Affordability',
-                            '4' => 'Husband and/or in law’s disagreement',
-                            '5' => 'Desire of more children',
-                            '6' => 'Other'
+                            1 => 'Side effects',
+                            2 => 'Unavailability of products',
+                            3 => 'Affordability',
+                            4 => 'Husband and/or in law’s disagreement',
+                            5 => 'Desire of more children',
+                            6 => 'Other'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('type') !== '2'),
+                        ->hidden(function (Closure $get){
+                            return in_array($get('type'), [1,3]);
+                        }),
                         
                     Forms\Components\Select::make('reason_for_never_use')
                     //  18: Reasons for never use: 1=Husband and/or in law’s disagreement, 2=Misconceptions/myths/religion, 3=Don’t have any idea about FP/lack of awareness, 4=Feel shy to discuss with husband, 5=Affordability, 6=Other (specify)___________
                         ->options([
-                            '1' => 'Husband and/or in law’s disagreement',
-                            '2' => 'Misconceptions/myths/religion',
-                            '3' => 'Don’t have any idea about FP/lack of awareness',
-                            '4' => 'Feel shy to discuss with husband',
-                            '5' => 'Affordability',
-                            '6' => 'Other'
+                            1 => 'Husband and/or in law’s disagreement',
+                            2 => 'Misconceptions/myths/religion',
+                            3 => 'Don’t have any idea about FP/lack of awareness',
+                            4 => 'Feel shy to discuss with husband',
+                            5 => 'Affordability',
+                            6 => 'Other'
                         ])
                         ->required()
-                        ->hidden(fn (Closure $get) => $get('type') !== '3'),
+                        ->hidden(function (Closure $get){
+                            return in_array($get('type'), [1,2]);
+                        }),
                 ])
                 ->columns(2),
                 Forms\Components\Select::make('registered_at')
