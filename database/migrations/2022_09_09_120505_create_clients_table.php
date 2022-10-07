@@ -32,7 +32,7 @@ return new class extends Migration
             $table->integer('type');
             $table->integer('current_method')->nullable();
             $table->integer('period_months')->nullable();
-            $table->string('reason', 255)->nullable();
+            $table->integer('reason')->nullable();
             $table->string('registered_at', 100); //Client Registered at (HHV, NHM, OM)
             $table->boolean('referred')->default(0);
             $table->integer('added_by'); 
