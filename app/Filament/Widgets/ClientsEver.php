@@ -3,6 +3,9 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\PolarAreaChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use App\Models\Client;
 
 class ClientsEver extends PolarAreaChartWidget
 {
@@ -10,20 +13,25 @@ class ClientsEver extends PolarAreaChartWidget
 
     protected function getData(): array
     {
+        $data = Trend::query(Client::where('type', 2))
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Clients Ever user',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                     'backgroundColor' => [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
-                      ],
+                        'rgba(255, 99, 132, 0.2)'
+                        ]
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            
+            'labels' =>  $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
 }

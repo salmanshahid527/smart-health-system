@@ -3,6 +3,9 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\BarChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use App\Models\Client;
 
 class ClientsCurrent extends BarChartWidget
 {
@@ -10,18 +13,25 @@ class ClientsCurrent extends BarChartWidget
 
     protected function getData(): array
     {
+        $data = Trend::query(Client::where('type', 1))
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Clients Current user',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                     'backgroundColor' => [
                         'rgba(255, 99, 132, 0.2)'
                         ]
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            
+            'labels' =>  $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
 }

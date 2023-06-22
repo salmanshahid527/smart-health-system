@@ -1,8 +1,11 @@
 <?php
-
+//https://bestofphp.com/repo/Flowframe-laravel-trend
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\LineChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use App\Models\Client;
 
 class Clients extends LineChartWidget
 {
@@ -10,14 +13,22 @@ class Clients extends LineChartWidget
 
     protected function getData(): array
     {
+        $data = Trend::model(Client::class)
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Clients created',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' =>  $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
 }

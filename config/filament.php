@@ -140,6 +140,7 @@ return [
         'register' => [
             // Widgets\AccountWidget::class,
             // Widgets\FilamentInfoWidget::class,
+            App\Filament\Widgets\ClientsOverview::class,
             App\Filament\Widgets\Clients::class,
             App\Filament\Widgets\ClientsCurrent::class,
             App\Filament\Widgets\ClientsNever::class,

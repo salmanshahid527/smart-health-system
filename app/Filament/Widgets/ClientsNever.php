@@ -3,6 +3,9 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\DoughnutChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use App\Models\Client;
 
 class ClientsNever extends DoughnutChartWidget
 {
@@ -10,11 +13,19 @@ class ClientsNever extends DoughnutChartWidget
 
     protected function getData(): array
     {
+        $data = Trend::query(Client::where('type', 3))
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Clients Never user',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                     'backgroundColor' => [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
@@ -22,8 +33,7 @@ class ClientsNever extends DoughnutChartWidget
                       ],
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            
+            'labels' =>  $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
 }

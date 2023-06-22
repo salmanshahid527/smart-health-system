@@ -48,7 +48,7 @@ class User extends Authenticatable implements FilamentUser
     protected static function booted()
     {
         static::addGlobalScope('ancient', function (Builder $builder) {
-            $builder->where('type', null);
+            $builder->where('type', null)->OrWhere('type', 0);
         });
     }
 }
